@@ -28,7 +28,7 @@ def bereken_totaal(list):
 
 ### Importeren van CSV
 # De code voor importeren
-afschriften = pd.read_csv("NL68INGB0671714872_30-08-2022_13-10-2022.csv")
+afschriften = pd.read_csv("bankafschrift_test.csv")
 afschriften["Bedrag (EUR)"] = afschriften["Bedrag (EUR)"].str.replace(",", ".").astype("float")
 # apart dataframe voor bijschrijvingen
 mask_bij = afschriften["Af Bij"] == "Bij"
