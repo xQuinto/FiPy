@@ -1,7 +1,7 @@
 <MyGrid>:
 
-    name: name  # Global variable name references the id name
-    email: email  # Global variable email references the id email
+    inkomsten: inkomsten  # Global variable name references the id name
+    uitgaven: uitgaven  # Global variable email references the id email
 
     GridLayout:
         cols:1
@@ -12,20 +12,20 @@
             cols:2
 
             Label:
-                text: "Name: "
+                text: "Inkomsten: "
 
             TextInput:
-                id: name
+                id: inkomsten
                 multiline:False
 
             Label:
-                text: "Email: "
+                text: "Uitgaven (zonder spaarrekening): "
 
             TextInput:
-                id: email
+                id: uitgaven
                 multiline:False
 
         Button:
-            text:"Submit"
+            text:"Check finances"
             on_press: root.btn()
 
