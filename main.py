@@ -2,12 +2,15 @@ import pandas as pd
 #from pandas_datareader import data
 #from kivy.app import App
 from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.image import Image
 from kivy.uix.widget import Widget
 from kivy.properties import ObjectProperty
 from kivy.lang import Builder
 from kivymd.app import MDApp
 from backend_kivyagg import FigureCanvasKivyAgg
 import matplotlib.pyplot as plt
+from kivy.uix.screenmanager import ScreenManager, Screen
+
 
 def bereken_uitgave_per_kostenpost(kostenpost):
     mask = bankafschrift_af["Naam / Omschrijving"].str.contains(kostenpost)
@@ -70,7 +73,7 @@ baby_list = ["POORT", "PRENATAL", "BabyDump"]
 betaalverzoeken_list = ["Betaalverzoek"]
 zwangerschap_list = ["Zijl"]
 dagje_uit_list = ["Madurodam"]
-# Dit klopt alleen maar op dit dataframe en deze rekening, onder overig plaatsen?
+# Dit klopt alleen maar op dit dataframe en deze rekening, onder overig plaatsen? EIGENLIJK EEN VARIABELE VAN MAKEN
 af_naar_eigen_rekening_list = ["Land"]
 kosten_ing_list = ["OranjePakket", "tweede rekeninghouder"]
 
@@ -80,7 +83,7 @@ eten_bestellen_totaal = bereken_totaal(eten_bestellen_list)
 verzorging_totaal = bereken_totaal(verzorging_list)
 eten_onderweg_totaal = bereken_totaal(eten_onderweg_list)
 # bij kleding moet tinka er eigenlijk nog van af, of ga ik dit anders verwerken?
-# Tinka moet eigenlijk anders verwerkt worden anders verdwijnt er teveel geld bij overig.
+# Tinka moet eigenlijk anders verwerkt worden anders verdwijnt er teveel geld bij overig, KLEDING TOCH?.
 kleding_totaal = bereken_totaal(kleding_list)
 geld_opgenomen_totaal = bereken_totaal(geld_opgenomen_list)
 uit_eten_totaal = bereken_totaal(uit_eten_list)
@@ -102,47 +105,72 @@ uitgaven_overig = bankafschrift_af_zonder_naar_spaar["Bedrag (EUR)"].sum() - uit
 x = ["Boodschappen", "shoppen", "kleding", "verzorging", "geldautomaat", "uit eten", "bebe", "betaalverzoeken", "zwanger", "onderweg eten", "dagje uit", "eigen rekening", "ing kosten", "eten bestellen"]
 y = [boodschappen_totaal, shoppen_totaal, kleding_totaal, verzorging_totaal, geld_opgenomen_totaal, uit_eten_totaal, baby_totaal, betaalverzoeken_totaal, zwangerschap_totaal, eten_onderweg_totaal, dagje_uit_totaal, af_naar_eigen_rekening_totaal, kosten_ing_totaal, eten_bestellen_totaal]
 
-plt.plot(x, y)
+#plt.plot(x, y)
 #plt.bar(x, y)
-#plt.pie(y, labels=x)
+plt.pie(y, labels=x)
 plt.ylabel("Bedrag in euro's")
 plt.xlabel("Kostenpost")
 plt.title("Uitgaven per kostenpost")
 
 
-class Matty(FloatLayout):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-
-        box = self.ids.box
-        box.add_widget(FigureCanvasKivyAgg(plt.gcf()))
-
-    def save_it(self):
-        name = self.ids.namer.text
-        if name:
-            plt.savefig(name)
+# WORDT NU NIET GEBRUIKT, IS OM GRAPH OP SCHERM TE LATEN ZIEN
+# class Matty(FloatLayout):
+#     def __init__(self, **kwargs):
+#         super().__init__(**kwargs)
+#
+#         box = self.ids.box
+#         box.add_widget(FigureCanvasKivyAgg(plt.gcf()))
+#
+#     def save_it(self):
+#         name = self.ids.namer.text
+#         if name:
+#             plt.savefig(name)
 
 
 #  WORDT NU NIET GEBRUIKT
-class MyGrid(Widget):
-    inkomsten = ObjectProperty(None)
-    uitgaven = ObjectProperty(None)
-    #  print(uitgaven_totaal)
+# class MyGrid(Widget):
+#     inkomsten = ObjectProperty(None)
+#     uitgaven = ObjectProperty(None)
+#     #  print(uitgaven_totaal)
+#
+#     def btn(self):
+#         #  print("Name:", self.name.text, "email:", self.email.text)
+#         self.inkomsten.text = str(bankafschrift_bij["Bedrag (EUR)"].sum())
+#         self.uitgaven.text = str(uitgaven_totaal)
 
-    def btn(self):
-        #  print("Name:", self.name.text, "email:", self.email.text)
-        self.inkomsten.text = str(bankafschrift_bij["Bedrag (EUR)"].sum())
-        self.uitgaven.text = str(uitgaven_totaal)
+# TEST OM MEERDERE SCREENS TE HEBBEN
+class MainWindow(Screen):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+        wimg = Image(source='oktober.png')
+        self.add_widget(FigureCanvasKivyAgg(plt.gcf()))
+
+
+class SecondWindow(Screen):
+    pass
+
+
+class WindowManager(ScreenManager):
+    pass
 
 
 class ExcelFinancienApp(MDApp):
     def build(self):
+        # TEST OM VARIABELEN OP SCHERM TE LATEN ZIEN
         #  return MyGrid()
 
+        # GEEN IDEE WAT DIT IS, MAAR STOND IN DE TUTORIAL
         #  self.theme_cls.theme_style = "Dark"
         #  self.theme_cls.primary_palette = "BlueGray"
-        Builder.load_file('matplotlibtest.kv')
-        return Matty()
+
+        # DIT IS OM DE GRAPH VAN UITGAVEN TE LATEN ZIEN OP 1 SCHERM
+        # Builder.load_file('matplotlibtest.kv')
+        # return Matty()
+
+        # TEST OM MULTISCREEN TE MAKEN
+        kv = Builder.load_file("screenmanagingtest.kv")
+        return kv
 
 
 if __name__ == "__main__":

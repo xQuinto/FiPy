@@ -1,0 +1,32 @@
+WindowManager:
+    MainWindow:
+    SecondWindow:
+
+<MainWindow>:
+    name: "main"
+
+    GridLayout:
+        cols:1
+
+# het werkt iig wel op size als ik image inlaadt ipv de graph zelf, niet de bedoeling natuurlijk
+# misschien gaan werken met float ipv grid?
+# laadt nu ook de pie graph onder de image bar graph
+        Image:
+            source: 'oktober.png'
+            size: self.texture_size
+
+        Button:
+            text: "Go to second"
+            on_release:
+                app.root.current = "second"
+                root.manager.transition.direction = "left"
+
+
+<SecondWindow>:
+    name: "second"
+
+    Button:
+        text: "Go Back"
+        on_release:
+            app.root.current = "main"
+            root.manager.transition.direction = "right"
