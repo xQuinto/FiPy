@@ -106,11 +106,20 @@ x = ["Boodschappen", "shoppen", "kleding", "verzorging", "geldautomaat", "uit et
 y = [boodschappen_totaal, shoppen_totaal, kleding_totaal, verzorging_totaal, geld_opgenomen_totaal, uit_eten_totaal, baby_totaal, betaalverzoeken_totaal, zwangerschap_totaal, eten_onderweg_totaal, dagje_uit_totaal, af_naar_eigen_rekening_totaal, kosten_ing_totaal, eten_bestellen_totaal]
 
 #plt.plot(x, y)
-#plt.bar(x, y)
-plt.pie(y, labels=x)
+plt.bar(x, y)
+#plt.pie(y, labels=x)
+
+# test1 = bankafschrift_bij["Bedrag (EUR)"].sum()
+# test2 = uitgaven_totaal
+# x=["Inkomsten", "Uitgaven"]
+# y=[test2,test1]
+# plt.bar(x,y)
+
+
 plt.ylabel("Bedrag in euro's")
 plt.xlabel("Kostenpost")
 plt.title("Uitgaven per kostenpost")
+#plt.savefig("oktober")
 
 
 # WORDT NU NIET GEBRUIKT, IS OM GRAPH OP SCHERM TE LATEN ZIEN
@@ -143,9 +152,10 @@ class MainWindow(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        wimg = Image(source='oktober.png')
+        #wimg = Image(source='oktober.png')
+        # HOE GEEF IK DIT EEN SIZE MEE????
         self.add_widget(FigureCanvasKivyAgg(plt.gcf()))
-
+        #self.add_widget(FigureCanvasKivyAgg(plt.gcf()))
 
 class SecondWindow(Screen):
     pass
